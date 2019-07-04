@@ -15,6 +15,16 @@ public class RootController {
         return "redirect:profile";
     }
 
+    @GetMapping("/login")
+    public String login() {
+        return "login";
+    }
+
+    @GetMapping("/logout")
+    public String logout() {
+        return "login";
+    }
+
     @GetMapping("/profile")
     public String profile() {
         return "profile";

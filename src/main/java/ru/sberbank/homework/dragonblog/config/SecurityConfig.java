@@ -24,20 +24,29 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .withUser("user").password(encoder().encode("userPass")).roles("USER");
     }
 
-//    @Override
-//    protected void configure(HttpSecurity http) throws Exception {
-//        http
-//                .csrf().disable()
-//                .exceptionHandling()
-//                .and()
-//                .authorizeRequests()
-//                .antMatchers("/dragonblog/all").authenticated()
-//                .antMatchers("/dragonblog/admin/**").hasRole("ADMIN")
-//                .and()
-//                .formLogin()
-//                .and()
-//                .logout();
-//    }
+    @Override
+    protected void configure(HttpSecurity http) throws Exception {
+        http
+                .csrf().disable()
+                .exceptionHandling()
+                .and().authorizeRequests()
+//                    .antMatchers("/posts").permitAll()
+                    .antMatchers("/**").hasAnyRole("ADMIN", "USER")
+                    .anyRequest().authenticated()
+                .and().formLogin()
+                    .loginPage("/login")
+                    .permitAll()
+//                    .loginProcessingUrl("/login")
+//                    .usernameParameter("username")
+//                    .passwordParameter("password")
+//                    .defaultSuccessUrl("/profile")
+                .and().logout()
+                    .permitAll()
+//                    .logoutUrl("/logout")
+//                    .logoutSuccessUrl("/login")
+                .and().exceptionHandling()
+                    .accessDeniedPage("/error");
+    }
 
     @Bean
     public PasswordEncoder encoder() {
